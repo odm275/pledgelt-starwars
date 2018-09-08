@@ -1,0 +1,43 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; }
+
+.container {
+  margin: 2rem; }
+
+.flex {
+  display: flex; }
+  .flex__side {
+    margin-right: -300px; }
+    .flex__side--front {
+      background-color: green; }
+    .flex__side--back {
+      background-color: black;
+      color: white;
+      font-size: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      transform: rotateY(180deg); }
+  .flex:hover .flex__side--front {
+    transform: rotateY(-180deg); }
+  .flex:hover .flex__side--back {
+    transform: rotateY(0deg); }
+
+.card {
+  width: 30rem;
+  height: 40rem;
+  border-radius: 2.6rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.45);
+  transition: all 1s ease;
+  /* With backface-visibility set to 'hidden', the back side of the card will not be shown when  facing the user. */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden; }
