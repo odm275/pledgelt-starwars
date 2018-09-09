@@ -27,9 +27,9 @@ html {
       justify-content: center;
       text-align: center;
       transform: rotateY(180deg); }
-  .flex:hover .flex__side--front {
+  .flex__flip--front {
     transform: rotateY(-180deg); }
-  .flex:hover .flex__side--back {
+  .flex__flip--back {
     transform: rotateY(0deg); }
 
 .card {

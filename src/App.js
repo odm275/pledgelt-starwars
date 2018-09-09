@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Character from "./Character";
+import CharacterList from "./CharacterList";
 import "./App.css";
 
 class App extends Component {
@@ -27,7 +27,7 @@ class App extends Component {
       <div className="App">
         <h1 className="welcome">Select a Film</h1>
         <input />
-        <Character />
+        <CharacterList people={characters} />
       </div>
     );
   }

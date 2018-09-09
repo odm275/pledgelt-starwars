@@ -38,11 +38,11 @@ html {
     }
   }
 
-  &:hover &__side--front {
+  &__flip--front {
     transform: rotateY(-180deg);
   }
 
-  &:hover &__side--back {
+  &__flip--back {
     transform: rotateY(0deg);
   }
 }
