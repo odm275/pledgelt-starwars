@@ -9,43 +9,46 @@ class App extends Component {
     super(props);
     this.state = {
       selections: [],
-      selectedItem: {},
       characters: [],
+      selectedItem: {},
       showItems: false
     };
     this.getCharacters = this.getCharacters.bind(this);
     this.selectItem = this.selectItem.bind(this);
+    this.dropDown = this.dropDown.bind(this);
   }
   componentDidMount() {
     this.loadSelection();
     //this.getCharacters();
   }
-
-  //  Load selection from api, and sort by movieid.
-  //  The default selection will be [0] -> Revenge of the Sith:
-  //  ToDo: I need to know that here ...
+  //  Load Selection Menu; arrange by order; and set a default selectItem.
   async loadSelection() {
     const { data } = await axios(`https://swapi.co/api/films/`);
-    let characters = [];
     const movieSelections = data.results
       .map(movie => {
-        characters.push(movie.characters);
-        return { value: movie.title, id: movie.episode_id };
+        return {
+          value: movie.title,
+          id: movie.episode_id,
+          characters: movie.characters
+        };
       })
       .sort((a, b) => a.id - b.id);
-    console.log(characters);
+    //Default selection
+    this.selectItem(movieSelections[0]);
     this.setState({ selections: movieSelections });
   }
-  // gets request, resolve array of promises,
-  // sorts by alphabetical, and setsState
+
+  // Takes in array of character;
   async getCharacters(arr) {
-    //arr: Array of characters that I need to make a get request for and Sort.
-    const { data } = await axios(`https://swapi.co/api/people`);
-    const namesAndHomeworldPromises = data.results.map(async character => {
-      const homeworld = await axios(character.homeworld);
-      return { name: character.name, homeworld: homeworld.data.name };
+    console.log(arr);
+    const namesAndHomeworldPromises = arr.map(async character => {
+      const getCharData = await axios(character);
+      const { name, homeworld } = getCharData.data;
+      const getCharHomeworld = await axios(homeworld);
+      return { name: name, homeworld: getCharHomeworld.data.name };
     });
     Promise.all(namesAndHomeworldPromises).then(results => {
+      console.log(results);
       const sortedResults = results.sort((a, b) => {
         //Sort by Alphabetical order
         const nameA = a.name.toUpperCase();
@@ -63,13 +66,34 @@ class App extends Component {
     });
   }
 
+  dropDown() {
+    this.setState({ showItems: !this.state.showItems });
+  }
+  selectItem(item) {
+    console.log("Item has been selected!");
+    this.setState(
+      {
+        selectedItem: item,
+        showItems: false
+      },
+      () => this.getCharacters(item.characters)
+    );
+  }
+
   render() {
-    const { characters, selections } = this.state;
-    console.log(selections);
+    const { characters, selections, selectedItem, showItems } = this.state;
     return (
       <div style={{ margin: "2rem" }}>
         <h1 className="welcome">Select a Film</h1>
-        <SelectBox items={selections} width={"100%"} />
+        <SelectBox
+          items={selections}
+          selectedItem={selectedItem}
+          selectItem={this.selectItem}
+          dropDown={this.dropDown}
+          onItemSelection={this.selectItem.bind(this)}
+          showItems={showItems}
+          width={"100%"}
+        />
         <CharacterList people={characters} />
       </div>
     );
