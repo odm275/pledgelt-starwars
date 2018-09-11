@@ -6,7 +6,11 @@ class SelectBox extends Component {
       <div>
         <div
           className="select-box--container"
-          style={{ maxWidth: this.props.width || "500px" }}
+          style={{
+            maxWidth: this.props.width || "500px",
+            fontSize: "2rem",
+            paddingBottom: "2rem"
+          }}
         >
           <div className="select-box--selected-item">
             {this.props.selectedItem.value}

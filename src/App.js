@@ -7,6 +7,7 @@ import "./App.css";
 class App extends Component {
   constructor(props) {
     super(props);
+    this.characterList = [];
     this.state = {
       selections: [],
       characters: [],
@@ -18,8 +19,8 @@ class App extends Component {
     this.dropDown = this.dropDown.bind(this);
   }
   componentDidMount() {
+    //Loads Default State
     this.loadSelection();
-    //this.getCharacters();
   }
   //  Load Selection Menu; arrange by order; and set a default selectItem.
   async loadSelection() {
@@ -38,9 +39,9 @@ class App extends Component {
     this.setState({ selections: movieSelections });
   }
 
-  // Takes in array of character;
+  // Takes in array of character; get request the character's info;
+  // resolve promises; sort in alphabetical order; update status
   async getCharacters(arr) {
-    console.log(arr);
     const namesAndHomeworldPromises = arr.map(async character => {
       const getCharData = await axios(character);
       const { name, homeworld } = getCharData.data;
@@ -48,7 +49,6 @@ class App extends Component {
       return { name: name, homeworld: getCharHomeworld.data.name };
     });
     Promise.all(namesAndHomeworldPromises).then(results => {
-      console.log(results);
       const sortedResults = results.sort((a, b) => {
         //Sort by Alphabetical order
         const nameA = a.name.toUpperCase();
@@ -70,7 +70,6 @@ class App extends Component {
     this.setState({ showItems: !this.state.showItems });
   }
   selectItem(item) {
-    console.log("Item has been selected!");
     this.setState(
       {
         selectedItem: item,
@@ -84,7 +83,9 @@ class App extends Component {
     const { characters, selections, selectedItem, showItems } = this.state;
     return (
       <div style={{ margin: "2rem" }}>
-        <h1 className="welcome">Select a Film</h1>
+        <h1 className="welcome">
+          A long time ago in a galaxy far, far away...
+        </h1>
         <SelectBox
           items={selections}
           selectedItem={selectedItem}

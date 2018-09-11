@@ -3,9 +3,9 @@ import CharacterInfo from "./CharacterInfo";
 const CharacterList = ({ people }) => {
   return (
     <div>
-      {people.map(character => {
+      {people.map((character, i) => {
         return (
-          <div>
+          <div key={i}>
             <CharacterInfo characterInfo={character} />
           </div>
         );
