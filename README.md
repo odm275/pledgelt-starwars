@@ -6,4 +6,5 @@ ToDo:
 - Resolve async requests dynamically. Promise.all() is inefficient since it has to wait for every promise to resolve.
 
 1. git clone https://github.com/odm275/pledgelt-starwars.git
-2. npm start
+2. npm i
+3. npm start
